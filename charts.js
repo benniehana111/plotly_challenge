@@ -58,40 +58,38 @@ function init() {
 
     // 2. Use d3.json to load and retrieve the samples.json file 
     d3.json("samples.json").then((data) => {
-      console.log(data);
 
     // 3. Create a variable that holds the samples array. 
     var sample_data = data.samples;
-    console.log(sample_data);
   
     // 4. Create a variable that filters sample data for the sample id chosen 
     //    from the dropdown and passed into the buildCharts()function.
     var sample_id = sample_data.filter(sampleObj => sampleObj.id == sample);
-    console.log(sample_id);
 
     //  5. Create a variable that holds the first sample in the array.
     var first_sample = sample_id[0];
-    console.log(first_sample);
 
     // 6. Create variables that hold the otu_ids, otu_labels, and sample_values.
-    var sample_otu_ids = first_sample.otu_ids;
-    var sample_otu_labels = first_sample.otu_labels;
-    var sample_values = first_sample.sample_values;
+    var list_otu_ids = first_sample.otu_ids;
+    var list_otu_labels = first_sample.otu_labels;
+    var list_values = first_sample.sample_values;
+    console.log(list_otu_ids);
+    console.log(list_otu_labels);
+    console.log(list_values);
 
     // 7. Create the yticks for the bar chart.
     // Hint: Get the the top 10 otu_ids and map them in descending order  
-    //  so the otu_ids with the most bacteria are last. 
-    var ranked_samples = sample_values.sort((a,b) => b - a);
-    var top10_samples = ranked_samples.slice(0,10);
-    console.log(top10_samples);
+    //       so the otu_ids with the most bacteria are last. 
+    var top10_values = list_values.slice(0,10);
+    console.log(top10_values);
 
-    var yticks = top10_samples
+    var yticks = top10_values
 
     // 8. Create the trace for the bar chart. 
     var barData = [{
-      x: top10_samples.map(values => values),
-      y: sample_otu_ids.map(ids => "OTU " + ids),
-      text: sample_otu_labels.map(labels => labels),
+      x: top10_values.map(values => values),
+      y: list_otu_ids.map(ids => "OTU " + ids),
+      text: list_otu_labels.map(labels => labels),
       type: "bar",
       orientation: "h"
     }];
@@ -107,13 +105,13 @@ function init() {
 
     // 1. Create the trace for the bubble chart.
     var bubbleData = [{
-      x: sample_otu_ids.map(ids => ids),
-      y: sample_values.map(values => values),
-      text: sample_otu_labels.map(labels => labels),
+      x: list_otu_ids.map(ids => ids),
+      y: list_values.map(values => values),
+      text: list_otu_labels.map(labels => labels),
       mode : "markers",
       marker : {
-        size: sample_values.map(values => values),
-        color : sample_otu_ids.map(ids => ids)
+        size: list_values.map(values => values),
+        color : list_otu_ids.map(ids => ids)
   }
   }
     ];
